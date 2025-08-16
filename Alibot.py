@@ -3,9 +3,6 @@ import openai
 import os
 import base64
 from dotenv import load_dotenv
-from segment_anything import SamPredictor, sam_model_registry
-from PIL import Image
-import numpy as np
 
 # Load API key from environment
 load_dotenv()
@@ -16,23 +13,8 @@ st.title("Interior Design Chatbot (Web Search + Image Understanding)")
 user_input = st.text_input("Ask your design question:")
 uploaded_img = st.file_uploader("Upload a room photo", type=["jpg", "jpeg", "png"])
 
-# Function to segment room image using SAM
-def segment_room_image(image):
-    # Convert PIL image to numpy array for SAM
-    image_array = np.array(image)
-    
-    # For now, just return basic info about the image
-    # SAM integration will be added step by step
-    height, width = image_array.shape[:2]
-    return f"Image dimensions: {width}x{height} pixels. Room segmentation will be processed here."
-
 if uploaded_img:
-    image = Image.open(uploaded_img)
-    st.image(image, caption="Uploaded Room Photo", use_column_width=True)
-    
-    # Process the image with SAM
-    segmentation_info = segment_room_image(image)
-    st.write(segmentation_info)
+    st.image(uploaded_img, caption="Uploaded Room Photo", use_column_width=True)
 
 if user_input:
     messages = [
