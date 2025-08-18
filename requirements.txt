@@ -1,3 +1,11 @@
 streamlit
 openai
 python-dotenv
+torch
+torchvision
+transformers
+diffusers
+controlnet_aux
+pillow
+opencv-python
+timm
