@@ -3,9 +3,6 @@ import openai
 import os
 import base64
 from dotenv import load_dotenv
-from transformers import Blip2Processor, Blip2ForConditionalGeneration
-from PIL import Image
-import torch
 
 # Load API key from environment
 load_dotenv()
@@ -16,28 +13,8 @@ st.title("Interior Design Chatbot (Web Search + Image Understanding)")
 user_input = st.text_input("Ask your design question:")
 uploaded_img = st.file_uploader("Upload a room photo", type=["jpg", "jpeg", "png"])
 
-# BLIP-2 for scene description
-@st.cache_resource
-def load_blip2():
-    processor = Blip2Processor.from_pretrained("Salesforce/blip2-opt-2.7b")
-    model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-opt-2.7b")
-    return processor, model
-
-def get_scene_description(image):
-    processor, model = load_blip2()
-    inputs = processor(image, return_tensors="pt")
-    outputs = model.generate(**inputs, max_length=50)
-    description = processor.decode(outputs[0], skip_special_tokens=True)
-    return description
-
 if uploaded_img:
-    image = Image.open(uploaded_img)
-    st.image(image, caption="Uploaded Room Photo", use_column_width=True)
-    
-    # Get scene description
-    with st.spinner("Analyzing room layout and camera angle..."):
-        scene_desc = get_scene_description(image)
-        st.write(f"**Scene Analysis:** {scene_desc}")
+    st.image(uploaded_img, caption="Uploaded Room Photo", use_column_width=True)
 
 if user_input:
     messages = [
