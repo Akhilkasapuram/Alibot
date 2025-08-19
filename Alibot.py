@@ -17,9 +17,7 @@ uploaded_img = st.file_uploader("Upload a room photo", type=["jpg", "jpeg", "png
 
 # Function to generate images using Hugging Face
 def generate_design_image(prompt):
-   # API_URL = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5"
-API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1"
-
+    API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1"
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
     
     enhanced_prompt = f"interior design, {prompt}, modern, well-lit, professional photography"
@@ -102,4 +100,3 @@ if user_input:
                 st.warning("⚠️ Image generation temporarily unavailable. The text advice above is still accurate!")
     else:
         st.info("Add HUGGINGFACE_API_KEY to enable image generation.")
-
