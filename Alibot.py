@@ -31,7 +31,8 @@ def generate_design_image(prompt):
     }
     
     try:
-        response = requests.post(API_URL, headers=headers, json=payload, timeout=60)
+        # Try with a 30 second timeout
+        response = requests.post(API_URL, headers=headers, json=payload, timeout=30)
         
         if response.status_code == 200:
             return response.content
@@ -40,6 +41,8 @@ def generate_design_image(prompt):
         else:
             st.error(f"API Error: {response.status_code} - {response.text}")
             return None
+    except requests.exceptions.Timeout:
+        return "TIMEOUT"  # Handle timeout specifically
     except Exception as e:
         st.error(f"Request failed: {str(e)}")
         return None
@@ -88,6 +91,8 @@ if user_input:
             
             if image_result == "MODEL_LOADING":
                 st.warning("🔄 Hugging Face model is starting up. Please wait 1-2 minutes and try again.")
+            elif image_result == "TIMEOUT":
+                st.warning("⏱️ Image generation timed out. Hugging Face servers might be busy. Try again in a few minutes.")
             elif image_result:
                 st.write("## 🎨 Generated Design:")
                 st.image(image_result, caption="AI Generated Design", use_container_width=True)
